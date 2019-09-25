@@ -1,18 +1,32 @@
-const fs = require('fs');
+// importar módulo
+const express = require('express');
 
-fs.readFile('usuarios.txt', 'utf8', function(err, data){
-    if(err) {
-        console.log('no hay archivo');
-    } else {
-        console.log('sí hay archivo', data);
-        fs.writeFile('usuarios.txt', data + '\nLuis', 'utf8', afterWrite);
-    }
+// instanciar app
+const app = express();
+
+// definir puerto
+const port = 3000;
+
+// definir una carpeta como pública
+app.use(express.static('public'));
+
+// definir ruta tipo get y su acción
+app.get('/', (request, response) => {
+    console.log('alguien entró a la ruta inicial');
+    response.sendFile(__dirname + '/public/home.html');
 });
 
-function afterWrite (err) {
-    if(err){
-        console.log('error al escribir archivo');
-    } else {
-        console.log('archivo escrito');
-    }
-}
+app.get('/contacto', (request, response) => {
+    console.log('alguien entró a la ruta de contacto');
+    response.sendFile(__dirname + '/public/contact.html');
+});
+
+app.get('/receiveContact', (request, response) => {
+    console.log('contacto recibido', request.query);
+    response.send('hola');
+});
+
+// inicar servidor en el puerto definido anteriormente
+app.listen(port, () => {
+    console.log(`Servidor iniciado en el puerto ${port}`);
+});
