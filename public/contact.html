@@ -14,7 +14,11 @@
     
     <a href="/">Ir al inicio</a>
 
-    <form action="/receiveContact">
+    <div style="border:2px solid red">
+        ¡Mensaje enviado!
+    </div>
+
+    <form action="/receiveContact" method="POST">
         <label for="contactname">Nombre:</label>
         <input type="text" id="contactname" name="name">
 
