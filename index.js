@@ -1,3 +1,7 @@
+// importar handlebars :)
+var exphbs  = require('express-handlebars');
+ 
+
 // importar módulo
 const express = require('express');
 // importar body parser
@@ -7,6 +11,10 @@ var fs = require('fs');
 
 // instanciar app
 const app = express();
+//lineas de handlebars
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
+
 
 // configuración body parser para poder usar variables post en el body
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,11 +33,15 @@ app.get('/', (request, response) => {
 
 app.get('/contacto', (request, response) => {
     console.log('alguien entró a la ruta de contacto');
-    response.sendFile(__dirname + '/public/contact.html');
+    response.render('contact');
 });
 
 app.get('/producto/:name', (request, response) => {
-    response.send('página de producto ' + request.params.name);
+    var context = {
+        name: request.params.name,
+        price: 100000,
+    };
+    response.render('product', context);
 });
 
 app.post('/receiveContact', (request, response) => {
