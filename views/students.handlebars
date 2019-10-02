@@ -1,0 +1,22 @@
+<h1>Estudiantes</h1>
+
+<form action="/estudiantes" method="GET">
+    <select name="orderType">
+        <option value="orderAge">Ordenar por Edad</option>
+        <option value="orderSemester">Ordenar por Semestre</option>
+    </select>
+    <button type="submit">Ordenar</button>
+</form>
+
+<form action="/estudiantes" method="GET">
+    <input type="hidden" name="filter" value="old">
+    <button type="submit">Mostrar viejos</button>
+</form>
+
+<a href="/estudiantes">Mostrar todos</a>
+
+<ul>
+    {{#each list}}
+        <li><strong>{{name}}</strong> - Edad: {{age}} - Semestre: {{semester}}</li>
+    {{/each}}
+</ul>

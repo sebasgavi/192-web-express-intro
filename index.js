@@ -25,10 +25,70 @@ const port = 3000;
 // definir una carpeta como pública
 app.use(express.static('public'));
 
+
+
+var studentList = [
+    {
+        name: 'Maria Jose',
+        age: 20,
+        semester: 6,
+    },
+    {
+        name: 'Jose',
+        age: 22,
+        semester: 5,
+    },
+    {
+        name: 'Karen',
+        age: 19,
+        semester: 7,
+    },
+    {
+        name: 'Juan',
+        age: 24,
+        semester: 5,
+    }
+];
+
+
+
 // definir ruta tipo get y su acción
 app.get('/', (request, response) => {
     console.log('alguien entró a la ruta inicial');
     response.sendFile(__dirname + '/public/home.html');
+});
+
+app.get('/estudiantes', (request, response) => {
+
+    var listCopy = studentList.slice();
+
+    if(request.query.orderType == 'orderAge'){
+        listCopy.sort(function(a, b){
+            return a.age - b.age;
+        });
+    }
+
+    if(request.query.orderType == 'orderSemester'){
+        listCopy.sort(function(a, b){
+            return a.semester - b.semester;
+        });
+    }
+
+    if(request.query.filter == 'old'){
+        listCopy = listCopy.filter(function(elem){
+            if(elem.age > 20){
+                return true;
+            } else {
+                return false;
+            }
+        });
+    }
+
+    var context = {
+        list: listCopy,
+        test: 'hola'
+    };
+    response.render('students', context);
 });
 
 app.get('/contacto', (request, response) => {
