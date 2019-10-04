@@ -25,7 +25,7 @@ const port = 3000;
 // definir una carpeta como pública
 app.use(express.static('public'));
 
-
+var cartList = [];
 
 var studentList = [
     {
@@ -47,6 +47,11 @@ var studentList = [
         name: 'Juan',
         age: 24,
         semester: 5,
+    },
+    {
+        name: 'Otro',
+        age: 40,
+        semester: 12,
     }
 ];
 
@@ -56,6 +61,36 @@ var studentList = [
 app.get('/', (request, response) => {
     console.log('alguien entró a la ruta inicial');
     response.sendFile(__dirname + '/public/home.html');
+});
+
+app.get('/api/students', (request, response) => {
+    response.send(studentList);
+});
+
+app.get('/api/cart', (request, response) => {
+    response.send(cartList);
+});
+
+app.post('/api/cart/:name', (request, response) => {
+    var name = request.params.name;
+    var student = studentList.find(function(elem) {
+        if(name == elem.name) {
+            return true;
+        }
+    });
+
+    if(!student){
+        response.send({
+            message: 'error',
+            cartLength: cartList.length
+        });
+        return;
+    }
+
+    cartList.push(student);
+    response.send({
+        cartLength: cartList.length
+    });
 });
 
 app.get('/estudiantes', (request, response) => {
@@ -86,6 +121,7 @@ app.get('/estudiantes', (request, response) => {
 
     var context = {
         list: listCopy,
+        cart: cartList,
         test: 'hola'
     };
     response.render('students', context);

@@ -15,8 +15,17 @@
 
 <a href="/estudiantes">Mostrar todos</a>
 
+<p class="cart">Carrito: <span class="cart__count">{{cart.length}}</span></p>
+
 <ul>
     {{#each list}}
-        <li><strong>{{name}}</strong> - Edad: {{age}} - Semestre: {{semester}}</li>
+        <li class="student">
+            <strong class="student__name">{{name}}</strong> - 
+            Edad: {{age}} - Semestre: {{semester}} 
+            <a href="#" class="student__btnadd" data-name="{{name}}">Agregar</a>
+        </li>
     {{/each}}
 </ul>
+
+
+<script src="/scripts/addToCart.js"></script>
